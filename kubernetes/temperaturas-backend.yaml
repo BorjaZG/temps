@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: temperaturas-backend
+  labels:
+    app: backend-temperaturas
+spec:
+  clusterIP: None
+  ports:
+    - port: 5000
+  selector:
+    app: backend-temperaturas
+    tier: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temperaturas-backend
+  labels:
+    app: backend-temperaturas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-temperaturas
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: backend-temperaturas
+        tier: backend
+    spec:
+      containers:
+        - name: backend
+          image: borjazg28734/temperaturas-backend
+          ports:
+            - containerPort: 5000
